@@ -1,10 +1,10 @@
 server {
     listen 80;
-    server_name nginx.asadsite.kozow.com;
+    server_name nginx.asadsite.kozow.com default_server;
 
     root /var/www/asadsite.kozow.com;
     index html/nginx.html; 
-    
+
     # return 301 https://$host$request_uri;
 }
 
