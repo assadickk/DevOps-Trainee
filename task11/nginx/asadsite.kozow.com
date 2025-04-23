@@ -2,7 +2,10 @@ server {
     listen 80;
     server_name nginx.asadsite.kozow.com;
 
-    return 301 https://$host$request_uri;
+    root /var/www/asadsite.kozow.com;
+    index html/nginx.html; 
+    
+    # return 301 https://$host$request_uri;
 }
 
 server {
