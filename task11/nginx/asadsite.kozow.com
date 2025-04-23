@@ -1,6 +1,6 @@
 server {
-    listen 80;
-    server_name nginx.asadsite.kozow.com default_server;
+    listen 80 default_server;
+    server_name nginx.asadsite.kozow.com ;
 
     root /var/www/asadsite.kozow.com;
     index html/nginx.html; 
