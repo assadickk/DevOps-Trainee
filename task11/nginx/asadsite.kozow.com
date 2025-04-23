@@ -12,5 +12,5 @@ server {
     ssl_certificate_key /etc/letsencrypt/live/asadsite.kozow.com/privkey.pem;
 
     root /var/www/asadsite.kozow.com;
-    index html/index.html; 
+    index html/nginx.html; 
 }
