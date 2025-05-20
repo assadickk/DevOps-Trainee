@@ -55,7 +55,7 @@ module "bastion_ssh_sg" {
   
   name        = "SSH-only"
   description = "SSH access to Bastion"
-  vpc_id      = module.vpc.id
+  vpc_id      = module.vpc.vpc_id
 
   ingress_rules       = ["ssh-tcp"]
   ingress_cidr_blocks = ["0.0.0.0/0"]
@@ -128,5 +128,4 @@ module "RDS_multiAZ" {
 
   maintenance_window = "Mon:00:00-Mon:03:00"
   backup_window      = "03:00-06:00"
-  
 }
