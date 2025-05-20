@@ -9,4 +9,5 @@ resource "aws_db_instance" "related_database_service" {
   engine = var.engine
   username = var.username
   password = var.password
+  skip_final_snapshot = var.skip_final_snapshot
 }

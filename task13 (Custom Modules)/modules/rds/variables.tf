@@ -33,3 +33,7 @@ variable "username" {
 variable "password" {
   default = ""
 }
+
+variable "skip_final_snapshot" {
+  default = true
+}
