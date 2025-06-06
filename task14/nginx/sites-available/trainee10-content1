@@ -2,10 +2,10 @@ server {
     listen 9090;
     server_name localhost;
 
-    root /usr/share/nginx/html;
+    root /var/www/trainee10.ddnsgeek.com/html;
     index content1.html;
 
     location / {
-        try_files $uri $uri/ =404;
-    }
+		try_files $uri $uri/ =404;
+	}
 }
