@@ -1,0 +1,25 @@
+services:
+  # apache:
+  #   image: 612100883299.dkr.ecr.eu-north-1.amazonaws.com/asadkrmv/trainee-apache:v1
+
+  nginx:
+    image: 612100883299.dkr.ecr.eu-north-1.amazonaws.com/asadkrmv/trainee-nginx:v2
+    volumes:
+      - nginx-logs:/var/log/nginx/
+    ports:
+      - 80:8090
+    # links:
+      # - apache:apache-server
+    # depends_on:
+      # - apache
+    
+  logs:
+    image: 612100883299.dkr.ecr.eu-north-1.amazonaws.com/asadkrmv/trainee-nginx-logs:v1
+    volumes:
+      - nginx-logs:/var/log/nginx/
+    depends_on:
+      - nginx
+    command: ["sh", "-c", "python /var/scripts/logs.py"]
+
+volumes:
+  nginx-logs:
