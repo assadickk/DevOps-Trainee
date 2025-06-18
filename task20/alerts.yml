@@ -1,0 +1,22 @@
+groups:
+  - name: Resource_Usage_Alerts
+    rules:
+      - alert: High_Cpu_Load
+        expr: 100 * (1 - avg by (instance) (rate(node_cpu_seconds_total{instance="cpu-server", mode="idle"}[1m]))) > 80
+        for: 1m
+        labels:
+          severity: warning
+          type: CPU
+        annotations:
+          summary: "High CPU load **instance {{ $labels.instance }}**"
+          description: "CPU load is > 80%, actually is {{ $value }}"
+
+      - alert: High_Memory_Load
+        expr: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes{instance="memory-server"}) / node_memory_MemTotal_bytes * 100 > 40
+        for: 1m
+        labels:
+          severity: warning
+          type: Memory
+        annotations:
+            summary: "High Memory Usage **instance {{ $labels.instance }}**"
+            description: "Memory Usage is > 40%, actually is {{ $value }}"

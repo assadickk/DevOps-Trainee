@@ -1,0 +1,25 @@
+---
+# installing docker for debian-based systems
+- name: installing packages
+  apt:
+    name: "{{ apt_packages }}"
+    state: present
+
+- name: adding gpg
+  apt_key:
+    url: https://download.docker.com/linux/{{ ansible_distribution }}/gpg
+    state: present
+
+- name: adding docker in apt
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/{{ ansible_distribution }} {{ ansible_distribution_release }} stable"    
+    state: present
+
+- name: update apt
+  apt:
+    update_cache: yes
+
+- name: install docker packages
+  apt:
+    name: "{{ apt_docker_packages }}"
+    state: present

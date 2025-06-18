@@ -1,0 +1,67 @@
+services:
+  prometheus-host:
+    image: bitnami/prometheus:3.4.1
+    configs:
+      - source: prometheus-conf
+        target: /opt/bitnami/prometheus/conf/prometheus.yml
+      - source: prometheus-alert
+        target: /opt/bitnami/prometheus/conf/alerts.yml
+    ports:
+      - 9090:9090
+
+  alertmanager:
+    image: bitnami/alertmanager:0.28.1
+    ports:
+      - 9093:9093
+    configs:
+      - source: alertmanager-conf
+        target: /opt/bitnami/alertmanager/conf/config.yml
+
+  cpu-server:
+    image: ubuntu/nginx:1.27-24.04_stable
+    deploy:
+      resources:
+        limits:
+          cpus: 1
+
+  memory-server:
+    image: ubuntu/nginx:1.27-24.04_stable
+    deploy:
+      resources:
+        limits:
+          memory: 24M
+
+  node-exporter-1:
+    image: bitnami/node-exporter:1.9.1
+    network_mode: "service:cpu-server"
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+
+
+  node-exporter-2:
+    image: bitnami/node-exporter:1.9.1
+    network_mode: "service:memory-server"
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+
+configs:
+  prometheus-conf:
+    file: ./prometheus.yml
+  prometheus-alert:
+    file: ./alerts.yml
+  alertmanager-conf:
+    file: ./alertmanager.yml

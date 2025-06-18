@@ -1,9 +1,9 @@
 services:
   apache:
-    image: 8ct8pus/apache-php-fpm-alpine:2.4.2
+    image: asadkrmv/trainee-apache
 
   nginx:
-    build: ./nginx/
+    build: asadkrmv/trainee-nginx
     volumes:
       - nginx-logs:/var/log/nginx/
     ports:
@@ -14,7 +14,7 @@ services:
       - apache
     
   logs:
-    build: ./logs/
+    build: asadkrmv/trainee-nginx-logs
     volumes:
       - nginx-logs:/var/log/nginx/
     depends_on:

@@ -1,0 +1,25 @@
+services:
+  apache:
+    image: asadkrmv/trainee-apache
+
+  nginx:
+    image: asadkrmv/trainee-nginx
+    volumes:
+      - nginx-logs:/var/log/nginx/
+    ports:
+      - 80:8090
+    links:
+      - apache:apache-server
+    depends_on:
+      - apache
+    
+  logs:
+    image: asadkrmv/trainee-nginx-logs
+    volumes:
+      - nginx-logs:/var/log/nginx/
+    depends_on:
+      - nginx
+    command: sh -c "python /var/scripts/logs.py"
+
+volumes:
+  nginx-logs:

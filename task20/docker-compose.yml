@@ -1,0 +1,26 @@
+services:
+  prometheus-host:
+    image: bitnami/prometheus:3.4.1
+    configs:
+      - source: prometheus-conf
+        target: /opt/bitnami/prometheus/conf/prometheus.yml
+      - source: prometheus-alert
+        target: /opt/bitnami/prometheus/conf/alerts.yml
+    ports:
+      - 9090:9090
+
+  alertmanager:
+    image: bitnami/alertmanager:0.28.1
+    ports:
+      - 9093:9093
+    configs:
+      - source: alertmanager-conf
+        target: /opt/bitnami/alertmanager/conf/config.yml
+
+configs:
+  prometheus-conf:
+    file: ./prometheus.yml
+  prometheus-alert:
+    file: ./alerts.yml
+  alertmanager-conf:
+    file: ./alertmanager.yml

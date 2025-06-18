@@ -1,0 +1,3 @@
+---
+# defaults file for docker-role
+docker_project_path: /home/docker

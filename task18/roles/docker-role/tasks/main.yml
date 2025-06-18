@@ -1,0 +1,32 @@
+---
+# tasks file for docker-role
+- name: Устанавливаем Docker на Debian/Ubuntu
+  include_tasks: debian.yml
+  when: ansible_os_family == "Debian"
+
+- name: Устанавливаем Docker на RHEL/CentOS
+  include_tasks: redhat.yml
+  when: ansible_os_family == "RedHat"
+
+- name: Запускаем и включаем Docker
+  service:
+    name: docker
+    state: started
+    enabled: true
+
+- name: Создаём директорию для docker-compose проекта
+  file:
+    path: "{{ docker_project_path }}"
+    state: directory
+    mode: '0755'
+
+- name: Копируем docker-compose.yml
+  copy:
+    src: docker-compose.yml
+    dest: "{{ docker_project_path }}/docker-compose.yml"
+    mode: '0644'
+
+- name: Запускаем docker compose
+  community.docker.docker_compose_v2:
+    project_src: "{{ docker_project_path }}"
+    state: present

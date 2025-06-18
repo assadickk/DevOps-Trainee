@@ -1,0 +1,37 @@
+---
+# installing docker for redhat-based systems
+- name: installing dnf packages
+  dnf:
+    name: dnf-plugins-core
+    state: present
+
+- name: adding docker in dnf
+  command: >
+    dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+  args:
+    creates: /etc/yum.repos.d/docker-ce.repo
+
+- name: installing docker packages
+  dnf:
+    name: "{{ docker_packages }}"
+    state: present
+    update_cache: yes
+
+# amazon linux 
+- name: installing docker
+  yum:
+    name: docker
+    state: present
+    update_cache: yes
+
+- name: mkdir for plugins
+  file:
+    path: /usr/libexec/docker/cli-plugins
+    state: directory
+    mode: '0755'
+
+- name: installing docker-compose
+  get_url:
+    url: https://github.com/docker/compose/releases/download/v2.27.0/docker-compose-linux-x86_64
+    dest: /usr/libexec/docker/cli-plugins/docker-compose
+    mode: '0755'
