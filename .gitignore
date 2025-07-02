@@ -6,3 +6,4 @@ Materials/*
 .\Materials
 *.bkp
 *.drawio
+alertmanager.yml

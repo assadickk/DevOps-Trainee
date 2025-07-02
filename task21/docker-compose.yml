@@ -1,0 +1,72 @@
+services:
+  prometheus-host:
+    image: bitnami/prometheus:3.4.1
+    configs:
+      - source: prometheus-conf
+        target: /opt/bitnami/prometheus/conf/prometheus.yml
+    ports:
+      - 9090:9090
+
+  grafana:
+    image: grafana/grafana:main
+    configs:
+      - source: grafana-conf
+        target: /etc/grafana/provisioning/datasources/datasources.yaml
+    ports:
+      - 3000:3000
+
+  promtail:
+    image: grafana/promtail:main
+    volumes:
+      - nginx-logs:/var/log/nginx
+    configs:
+      - source: promtail-conf
+        target: /etc/promtail/config.yml
+    depends_on:
+      - loki
+    ports:
+      - 9080:9080
+
+  loki:
+    image: grafana/loki:main
+    ports:
+      - 3100:3100
+    configs:
+      - source: loki-conf
+        target: /etc/loki/local-config.yaml
+
+  apache:
+    image: asadkrmv/trainee-apache
+
+  nginx:
+    # build: ./nginx
+    image: asadkrmv/trainee-nginx
+    volumes:
+      - nginx-logs:/var/log/nginx/
+    ports:
+      - 80:8090
+    links:
+      - apache:apache-server
+    depends_on:
+      - apache
+    
+  logs:
+    image: asadkrmv/trainee-nginx-logs
+    volumes:
+      - nginx-logs:/var/log/nginx/
+    depends_on:
+      - nginx
+    command: sh -c "python /var/scripts/logs.py"
+
+volumes:
+  nginx-logs:
+
+configs:
+  prometheus-conf:
+    file: ./prometheus.yml
+  promtail-conf:
+    file: ./promtail-config.yml
+  loki-conf:
+    file: ./loki-config.yml
+  grafana-conf:
+    file: ./Grafana/datasources.yml
