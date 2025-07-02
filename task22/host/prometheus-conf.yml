@@ -1,0 +1,21 @@
+global: 
+    scrape_interval: 30s
+    scrape_timeout: 15s 
+
+scrape_configs:
+  - job_name: host
+    static_configs:
+      - targets:
+        - localhost:9090
+    relabel_configs:
+      - target_label: instance
+        replacement: host
+      
+  - job_name: targets
+    static_configs:
+      - targets:
+        - 10.0.10.34:9100
+    relabel_configs:
+      - target_label: instance
+        replacement: target-instance
+    

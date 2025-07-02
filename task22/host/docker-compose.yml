@@ -1,0 +1,21 @@
+services:
+  prometheus:
+    image: bitnami/prometheus:3.4.1
+    volumes: 
+      - ./prometheus-conf.yml:/opt/bitnami/prometheus/conf/prometheus.yml
+    ports:
+      - 9090:9090
+
+  loki:
+    image: grafana/loki:main
+    volumes:
+      - ./loki-conf.yml:/etc/loki/local-config.yaml
+    ports:
+      - 3100:3100
+
+  grafana:
+    image: grafana/grafana:main
+    volumes: 
+      - ./datasources.yml:/etc/grafana/provisioning/datasources/datasources.yaml
+    ports:
+      - 3000:3000
