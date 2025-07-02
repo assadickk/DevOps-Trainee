@@ -3,7 +3,7 @@ services:
     image: asadkrmv/trainee-apache
 
   nginx:
-    build: asadkrmv/trainee-nginx
+    image: asadkrmv/trainee-nginx
     volumes:
       - nginx-logs:/var/log/nginx/
     ports:
@@ -14,7 +14,7 @@ services:
       - apache
     
   logs:
-    build: asadkrmv/trainee-nginx-logs
+    image: asadkrmv/trainee-nginx-logs
     volumes:
       - nginx-logs:/var/log/nginx/
     depends_on:
